@@ -5,28 +5,75 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="線上資金需求諮詢服務，填寫資料後由專人協助了解可行方案。" />
   <title>資金需求諮詢｜專人協助評估</title>
+  <script>
+    // Supabase only permits the stable production root URL for recovery emails.
+    // Pass recovery credentials straight through to the dedicated password page.
+    (function () {
+      var hash = new URLSearchParams(window.location.hash.slice(1));
+      var query = new URLSearchParams(window.location.search);
+      if (hash.get('type') === 'recovery' || query.has('code')) {
+        window.location.replace('/auth.html' + window.location.search + window.location.hash);
+      }
+    }());
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
+  <!-- Meta Pixel Code -->
+  <script>
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '2506070169900710');
+  fbq('track', 'PageView');
+  </script>
+  <!-- End Meta Pixel Code -->
+  <!-- TikTok Pixel Code Start -->
+  <script>
+  !function (w, d, t) {
+    w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]||[];ttq.methods=["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie"],ttq.setAndDefer=function(t,e){t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}};for(var i=0;i<ttq.methods.length;i++)ttq.setAndDefer(ttq,ttq.methods[i]);ttq.instance=function(t){for(var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n]);return e},ttq.load=function(e,n){var i="https://analytics.tiktok.com/i18n/pixel/events.js";ttq._i=ttq._i||{},ttq._i[e]=[],ttq._i[e]._u=i,ttq._t=ttq._t||{},ttq._t[e]=+new Date,ttq._o=ttq._o||{},ttq._o[e]=n||{};var o=document.createElement("script");o.type="text/javascript",o.async=!0,o.src=i+"?sdkid="+e+"&lib="+t;var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(o,a)};
+    ttq.load('DA3D8QJC77UBMOG4P550');
+    ttq.page();
+  }(window, document, 'ttq');
+  </script>
+  <!-- TikTok Pixel Code End -->
+  <style>.hero{height:500px;min-height:500px}.arrow-reveal-button{position:relative;display:flex;width:min(444px,100%);min-height:82px;align-items:center;overflow:hidden;border-radius:41px;background:#efbd45;color:#17130b;padding:16px 82px 16px 30px;font-size:20px;font-weight:900;text-decoration:none;box-shadow:0 10px 24px #0004}.arrow-reveal-button__label{position:relative;z-index:1;transition:transform .46s cubic-bezier(.44,0,.56,1)}.arrow-reveal-button__badge{position:absolute;z-index:2;right:20px;top:50%;width:48px;height:48px;border-radius:50%;background:#14532d;transform:translateY(-50%);transition:transform .46s cubic-bezier(.44,0,.56,1)}.arrow-reveal-button__icon{position:absolute;z-index:3;right:32px;top:50%;width:24px;height:24px;color:#fff;transform:translateY(-50%);transition:transform .46s cubic-bezier(.44,0,.56,1)}.arrow-reveal-button:hover .arrow-reveal-button__badge{transform:translateY(-50%) scale(12)}.arrow-reveal-button:hover .arrow-reveal-button__icon{transform:translate(-145px,-50%)}.arrow-reveal-button:hover .arrow-reveal-button__label{transform:translateX(8px);color:#fff}.funding-section{padding:26px 20px;overflow-x:visible}.funding-wrap{width:min(490px,100%);max-width:none}.funding-wrap .kicker{margin-bottom:4px}.funding-options{width:100%;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:16px auto 12px}.funding-options button{width:100%;height:60px;aspect-ratio:auto;font-size:28px;line-height:1.05}.application-page .submit{background:#14532d;color:#fff}.application-page .submit:hover{background:#0f3d21;color:#fff}@media(max-width:700px){.arrow-reveal-button{min-height:68px;padding:12px 70px 12px 22px;font-size:16px}.arrow-reveal-button__badge{right:16px;width:42px;height:42px}.arrow-reveal-button__icon{right:25px}.arrow-reveal-button:hover .arrow-reveal-button__icon{transform:translate(-120px,-50%)}}</style>
+  <style>
+    .funding-section { padding: 20px; }
+    .funding-wrap .kicker { margin-bottom: 3px; }
+    .funding-wrap h2 { font-size: clamp(28px, 3.5vw, 38px); line-height: 1.04; }
+    .funding-options { gap: 8px; margin: 12px auto 10px; }
+    .funding-options button { height: 52px; border-color: #b5e66a; background: #dbffad; color: #17320e; font-size: 20px; }
+    .funding-options button:hover, .funding-options button.is-selected { border-color: #91cf39; background: #aee85d; color: #102708; }
+    .funding-section .submit, .application-page .submit { background: #aee85d; color: #102708; box-shadow: 0 8px 18px #0003; }
+    .funding-section .submit:hover, .application-page .submit:hover { background: #91cf39; color: #102708; }
+    .application-page .form-wrap { padding-top: 42px; padding-bottom: 42px; }
+    form { gap: 10px; }
+    .note { padding-top: 18px; padding-bottom: 18px; background: #e7ede3; border-radius: 8px; }
+    .note h2 { color: #a67618; }
+    @media (max-width: 700px) { body { padding-bottom: 0; } .funding-section { padding: 18px 16px; } .funding-options button { height: 50px; font-size: 18px; } .application-page .form-wrap { padding-top: 34px; padding-bottom: 34px; } }
+  </style>
 </head>
 <body>
-  <header class="topbar"><a class="brand" href="#top">資金<span>諮詢</span></a><a class="top-cta" href="#funding">立即諮詢</a></header>
+  <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=2506070169900710&ev=PageView&noscript=1" alt="" /></noscript>
+  <header class="topbar"><a class="brand" href="#top">線上額度<span>評估</span></a><a class="top-cta" href="#funding">立即諮詢</a></header>
   <main id="top" class="landing-page">
     <section class="hero">
       <img src="assets/hero.jpg" alt="為資金周轉與卡費壓力煩惱的上班族" />
       <div class="hero-shade"></div>
-      <div class="hero-copy"><p class="eyebrow">資金需求，先釐清再行動</p><h1>讓專人協助您<br><em>擬定可行方案</em></h1><p>線上填寫需求，安排專人與您聯繫說明。</p><a class="button" href="#funding">免費初步諮詢 <span>→</span></a></div>
+      <div class="hero-copy"><p class="eyebrow">資金需求，先釐清再行動</p><h1>讓專人協助您<br><em>擬訂解決方案</em></h1><p>線上簡單填寫資料，即可送出評估。</p><a class="arrow-reveal-button" href="#funding"><span class="arrow-reveal-button__label">想借多少 自己先選</span><span class="arrow-reveal-button__badge" aria-hidden="true"></span><svg class="arrow-reveal-button__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12H19M19 12L13 6M19 12L13 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg></a></div>
     </section>
-    <section class="section intro"><p class="kicker">SIMPLE PROCESS</p><h2>從了解需求開始，<br>每一步都清楚透明</h2><p class="lead">不論是資金周轉、個人規劃或事業需求，留下聯絡方式，由專人說明適合您的服務流程。</p></section>
-    <section class="visual-card"><img src="assets/apply.jpg" alt="手機線上申請示意圖" /><div class="overlay-copy"><p>STEP 01</p><h2>線上填寫<br>快速又便利</h2></div></section>
-    <section class="section note"><h2>重要提醒</h2><p>本頁為諮詢服務資訊。是否受理、額度、利率、費用、撥款時間及其他條件，均須依個案資格與最終審核結果為準，並以正式合約與法定揭露內容為準。</p></section>
-    <section id="funding" class="funding-section"><div class="funding-wrap"><p class="kicker">SELECT AMOUNT</p><h2>選擇您的<br>資金需求額度</h2><div class="funding-options" role="group" aria-label="資金需求額度"><button type="button" data-amount="10萬-30萬">10萬-30萬</button><button type="button" data-amount="30萬-80萬">30萬-80萬</button><button type="button" data-amount="80萬-180萬">80萬-180萬</button><button type="button" data-amount="180萬-550萬">180萬-550萬</button></div><button id="continue-button" class="button submit" type="button" disabled>確認並繼續 <span>→</span></button></div></section>
+    <section id="funding" class="funding-section"><div class="funding-wrap"><p class="kicker">選擇額度</p><h2>選擇您的<br>資金需求額度</h2><div class="funding-options" role="group" aria-label="資金需求額度"><button type="button" data-amount="10萬-30萬">10萬-30萬</button><button type="button" data-amount="30萬-80萬">30萬-80萬</button><button type="button" data-amount="80萬-180萬">80萬-180萬</button><button type="button" data-amount="180萬-300萬">180萬-300萬</button></div><button id="continue-button" class="button submit" type="button" disabled>確認並繼續 <span>→</span></button></div></section>
   </main>
-  <main id="application-page" class="application-page" hidden><section class="form-section"><img src="assets/closing.jpg" alt="專人資金諮詢服務示意圖" /><div class="form-wrap"><button id="back-button" class="back-button" type="button">← 返回額度選擇</button><p class="kicker">GET IN TOUCH</p><h2>填寫<br><em>申請資料</em></h2><p>您選擇的額度：<strong id="selected-amount">未選擇</strong></p><form id="lead-form"><input id="amount-field" name="amount" type="hidden" /><label>您的稱呼<input name="name" autocomplete="name" required placeholder="請輸入稱呼" /></label><label>年齡<input name="age" type="number" inputmode="numeric" min="18" max="120" required placeholder="請輸入年齡" /></label><label>聯絡電話<input name="phone" inputmode="tel" autocomplete="tel" required placeholder="請輸入手機號碼" /></label><label>是否警示戶<select name="warning-account" required><option value="">請選擇</option><option value="yes">是</option><option value="no">否</option></select></label><label class="consent"><input type="checkbox" required /> <span>我已閱讀並同意提供資料，以供專人進行本次諮詢聯繫。</span></label><button class="button submit" type="submit">送出申請→添加LINE聯絡</button><p class="form-message" role="status"></p></form></div></section></main>
-  <a class="floating-cta" href="#funding">立即諮詢</a>
-  <footer>© 2026 資金諮詢服務 · 本頁資訊僅供參考</footer>
-  <div id="success-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="success-title" hidden><div class="modal-card"><h2 id="success-title">已送檢！</h2><p>編號115-15963</p><button id="close-modal" class="button" type="button">確定</button></div></div>
+  <main id="application-page" class="application-page" hidden><section class="form-section"><img src="assets/closing.jpg" alt="專人資金諮詢服務示意圖" /><div class="form-wrap"><button id="back-button" class="back-button" type="button">← 返回額度選擇</button><p class="kicker">聯絡我們</p><h2>填寫<br><em>申請資料</em></h2><p>您選擇的額度：<strong id="selected-amount">未選擇</strong></p><form id="lead-form"><input id="amount-field" name="amount" type="hidden" /><label>您的稱呼<input name="name" autocomplete="name" required placeholder="請輸入稱呼" /></label><label>年齡<input name="age" type="number" inputmode="numeric" min="18" max="120" required placeholder="請輸入年齡" /></label><label>聯絡電話<input name="phone" inputmode="tel" autocomplete="tel" required placeholder="請輸入手機號碼" /></label><label>是否警示戶<select name="warning-account" required><option value="">請選擇</option><option value="yes">是</option><option value="no">否</option></select></label><label class="consent"><input type="checkbox" required /> <span>我已閱讀並同意提供資料，以供專人進行本次諮詢聯繫。</span></label><button class="button submit" type="submit">送出申請→加入 LINE 聯絡</button><p class="form-message" role="status"></p></form></div></section></main>
+  <footer class="note"><h2>重要提醒</h2><p>本頁針對資金需求登記，不代表核准、利率或分配承諾；實際結果視個別條件確認。</p></footer>
+  <div id="success-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="success-title" hidden><div class="modal-card"><h2 id="success-title">已提交</h2><p>請加入專員溝通聯絡。</p></div></div>
   <script src="script.js"></script>
 </body>
 </html>

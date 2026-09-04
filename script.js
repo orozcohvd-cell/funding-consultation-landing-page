@@ -8,10 +8,18 @@ const backButton = document.querySelector('#back-button');
 const form = document.querySelector('#lead-form');
 const message = document.querySelector('.form-message');
 const modal = document.querySelector('#success-modal');
-const closeModal = document.querySelector('#close-modal');
 const submissionKey = 'funding-consultation-submitted';
-const lineUrl = 'https://lin.ee/U9spsws';
+const lineUrl = 'https://lin.ee/ynD1DjM';
 let selectedFunding = '';
+
+const trackTikTokEvent = (eventName, parameters = {}) => {
+  if (typeof window.ttq?.track === 'function') {
+    window.ttq.track(eventName, parameters);
+  }
+};
+
+const getTikTokClickId = () => new URLSearchParams(window.location.search).get('ttclid') || '';
+const getCookie = (name) => document.cookie.split('; ').find((value) => value.startsWith(`${name}=`))?.slice(name.length + 1) || '';
 
 const showLandingPage = () => {
   applicationPage.hidden = true;
@@ -35,20 +43,47 @@ amountButtons.forEach((button) => {
   });
 });
 
-continueButton.addEventListener('click', showApplicationPage);
+continueButton.addEventListener('click', () => {
+  trackTikTokEvent('ViewContent');
+  showApplicationPage();
+});
 backButton.addEventListener('click', showLandingPage);
 
-form.addEventListener('submit', (event) => {
+form.addEventListener('submit', async (event) => {
   event.preventDefault();
   if (localStorage.getItem(submissionKey)) {
     message.textContent = '此裝置已提交過申請。';
     return;
   }
-  localStorage.setItem(submissionKey, 'true');
-  modal.hidden = false;
-  window.setTimeout(() => window.location.assign(lineUrl), 1500);
-});
-
-closeModal.addEventListener('click', () => {
-  window.location.assign(lineUrl);
+  const submitButton = form.querySelector('[type="submit"]');
+  submitButton.disabled = true;
+  message.textContent = '正在送出申請…';
+  const data = new FormData(form);
+  try {
+    const response = await fetch('/api/leads', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: data.get('name'),
+        age: Number(data.get('age')),
+        phone: data.get('phone'),
+        amount: data.get('amount'),
+        warningAccount: data.get('warning-account') === 'yes',
+        tiktokClickId: getTikTokClickId(),
+        metaFbp: getCookie('_fbp'),
+        metaFbc: getCookie('_fbc'),
+        sourceUrl: window.location.href,
+      }),
+    });
+    const result = await response.json();
+    if (!response.ok) throw new Error(result.error || '系統暫時無法送出。');
+    localStorage.setItem(submissionKey, 'true');
+    trackTikTokEvent('Lead', { event_id: result.browserEventId });
+    message.textContent = '';
+    modal.hidden = false;
+    window.setTimeout(() => window.location.assign(lineUrl), 1000);
+  } catch (error) {
+    message.textContent = error.message;
+    submitButton.disabled = false;
+  }
 });

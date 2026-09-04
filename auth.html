@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>設定登入密碼｜資金諮詢</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="crm.css" />
+</head>
+<body>
+  <main class="crm-shell">
+    <section class="login-card">
+      <p class="eyebrow">STAFF ACCESS</p>
+      <h1>設定登入密碼</h1>
+      <p>請設定 CRM 專員帳號的新密碼。</p>
+      <form id="password-form" hidden>
+        <label>新密碼<input id="new-password" type="password" autocomplete="new-password" minlength="8" required /></label>
+        <label>再次輸入密碼<input id="confirm-password" type="password" autocomplete="new-password" minlength="8" required /></label>
+        <button type="submit">儲存新密碼</button>
+      </form>
+      <p id="auth-message" class="message" role="status">正在驗證連結…</p>
+    </section>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="auth.js"></script>
+</body>
+</html>

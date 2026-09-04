@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>線索管理｜資金諮詢</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="crm.css" />
+</head>
+<body>
+  <main class="crm-shell">
+    <section id="login-view" class="login-card">
+      <p class="eyebrow">STAFF ONLY</p>
+      <h1>線索管理</h1>
+      <p>請使用已授權的專員帳號登入。</p>
+      <form id="login-form">
+        <label>電子郵件<input id="email" type="email" autocomplete="email" required /></label>
+        <label>密碼<input id="password" type="password" autocomplete="current-password" required /></label>
+        <button type="submit">登入</button>
+        <button id="reset-password-button" class="secondary" type="button">忘記密碼</button>
+        <p id="login-message" class="message" role="status"></p>
+      </form>
+    </section>
+
+    <section id="crm-view" hidden>
+      <header class="crm-header">
+        <div><p class="eyebrow">STAFF ONLY</p><h1>線索管理</h1></div>
+        <div class="header-actions"><button id="refresh-button" class="secondary" type="button">重新整理</button><button id="signout-button" class="secondary" type="button">登出</button></div>
+      </header>
+      <p id="crm-message" class="message" role="status"></p>
+      <div id="lead-list" class="lead-list" aria-live="polite"></div>
+    </section>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="crm.js?v=20260901-reset-fix"></script>
+</body>
+</html>

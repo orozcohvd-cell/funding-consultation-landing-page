@@ -1,0 +1,26 @@
+:root { color-scheme: light; font-family: "Noto Sans TC", sans-serif; color: #193020; background: #f4f8f0; }
+* { box-sizing: border-box; }
+body { margin: 0; }
+button, input, textarea { font: inherit; }
+button { cursor: pointer; border: 0; border-radius: 10px; background: #14532d; color: #fff; font-weight: 800; padding: 11px 15px; }
+button:hover { background: #0f3d21; }
+.crm-shell { width: min(1100px, calc(100% - 32px)); margin: 0 auto; padding: 36px 0 72px; }
+.login-card { width: min(440px, 100%); margin: 8vh auto; padding: 32px; border-radius: 18px; background: #fff; box-shadow: 0 16px 45px #17320e1a; }
+.eyebrow { margin: 0 0 5px; color: #6c952c; font-size: 12px; font-weight: 900; letter-spacing: .12em; }
+h1 { margin: 0; font-size: clamp(28px, 5vw, 40px); line-height: 1.15; }
+form { display: grid; gap: 14px; margin-top: 24px; }
+label { display: grid; gap: 6px; font-size: 14px; font-weight: 700; }
+input, textarea { width: 100%; border: 1px solid #c8d8bf; border-radius: 9px; padding: 11px; background: #fff; color: #193020; }
+.message { min-height: 1.4em; margin: 12px 0; color: #9b2634; font-size: 14px; }
+.crm-header { display: flex; justify-content: space-between; gap: 20px; align-items: end; padding-bottom: 20px; border-bottom: 1px solid #dbe7d5; }
+.header-actions, .status-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.secondary { background: #e3eddd; color: #193020; }
+.secondary:hover { background: #cfdfc6; }
+.lead-list { display: grid; gap: 14px; }
+.lead-card { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 18px; padding: 20px; border-radius: 14px; background: #fff; box-shadow: 0 8px 24px #17320e12; }
+.lead-card h2 { margin: 0; font-size: 20px; }
+.lead-meta { display: flex; flex-wrap: wrap; gap: 7px 14px; margin: 10px 0; color: #4b5e4d; font-size: 14px; }
+.badge { display: inline-block; border-radius: 999px; padding: 4px 9px; background: #dbffad; color: #17320e; font-size: 12px; font-weight: 800; }
+.notes { width: min(360px, 100%); min-height: 66px; margin: 10px 0; resize: vertical; }
+.status-actions button { padding: 8px 10px; font-size: 13px; }
+@media (max-width: 700px) { .crm-shell { width: min(100% - 24px, 1100px); padding-top: 24px; } .crm-header, .lead-card { grid-template-columns: 1fr; align-items: start; } .crm-header { display: grid; } .header-actions { width: 100%; } .header-actions button { flex: 1; } .login-card { padding: 24px; } }
