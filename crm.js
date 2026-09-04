@@ -7,12 +7,23 @@ const loginForm = document.querySelector('#login-form');
 const loginMessage = document.querySelector('#login-message');
 const crmMessage = document.querySelector('#crm-message');
 const leadList = document.querySelector('#lead-list');
+const dateFilterForm = document.querySelector('#date-filter-form');
+const filterDate = document.querySelector('#filter-date');
+const todayButton = document.querySelector('#today-button');
+const statDate = document.querySelector('#stat-date');
+const dailySubmissionCount = document.querySelector('#daily-submission-count');
 
 const statusLabels = { new: '新線索', line_redirected: '已前往 LINE', contacted: '已聯絡', qualified: '有效諮詢', won: '成交', lost: '無效' };
 const statusActions = [['contacted', '標記已聯絡'], ['qualified', '標記有效諮詢'], ['won', '標記成交'], ['lost', '標記無效']];
 
 const setMessage = (target, text = '') => { target.textContent = text; };
 const formatTime = (value) => new Intl.DateTimeFormat('zh-TW', { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(value));
+const todayValue = () => {
+  const now = new Date();
+  const timezoneOffset = now.getTimezoneOffset() * 60 * 1000;
+  return new Date(now.getTime() - timezoneOffset).toISOString().slice(0, 10);
+};
+const formatDate = (value) => new Intl.DateTimeFormat('zh-TW', { dateStyle: 'long' }).format(new Date(`${value}T00:00:00`));
 
 async function api(path, options = {}) {
   const session = currentSession || (await supabaseClient.auth.getSession()).data.session;
@@ -73,10 +84,15 @@ function leadCard(lead) {
 async function loadLeads() {
   setMessage(crmMessage, '正在載入線索…');
   try {
-    const { leads } = await api('/api/admin/leads');
+    const selectedDate = filterDate.value;
+    const query = new URLSearchParams({ date: selectedDate });
+    const { leads, stats } = await api(`/api/admin/leads?${query.toString()}`);
     leadList.replaceChildren();
     if (!leads.length) leadList.textContent = '目前尚無線索。';
     else leads.forEach((lead) => leadList.append(leadCard(lead)));
+    const reportDate = stats?.selectedDate || selectedDate;
+    statDate.textContent = reportDate ? formatDate(reportDate) : '全部日期';
+    dailySubmissionCount.textContent = String(stats?.submissionCount ?? leads.length);
     setMessage(crmMessage);
   } catch (error) { setMessage(crmMessage, error.message); }
 }
@@ -108,6 +124,8 @@ loginForm.addEventListener('submit', async (event) => {
 });
 
 document.querySelector('#refresh-button').addEventListener('click', loadLeads);
+dateFilterForm.addEventListener('submit', (event) => { event.preventDefault(); loadLeads(); });
+todayButton.addEventListener('click', () => { filterDate.value = todayValue(); loadLeads(); });
 document.querySelector('#signout-button').addEventListener('click', async () => { await supabaseClient.auth.signOut(); currentSession = null; crmView.hidden = true; loginView.hidden = false; });
 document.querySelector('#reset-password-button').addEventListener('click', async () => {
   const email = document.querySelector('#email').value.trim();
@@ -119,3 +137,5 @@ document.querySelector('#reset-password-button').addEventListener('click', async
 });
 
 bootstrap();
+
+filterDate.value = todayValue();

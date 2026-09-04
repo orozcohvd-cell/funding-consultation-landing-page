@@ -30,11 +30,19 @@
         <div><p class="eyebrow">STAFF ONLY</p><h1>線索管理</h1></div>
         <div class="header-actions"><button id="refresh-button" class="secondary" type="button">重新整理</button><button id="signout-button" class="secondary" type="button">登出</button></div>
       </header>
+      <section class="crm-tools" aria-label="線索篩選與統計">
+        <form id="date-filter-form" class="date-filter">
+          <label for="filter-date">提交日期<input id="filter-date" type="date" required /></label>
+          <button type="submit">查詢</button>
+          <button id="today-button" class="secondary" type="button">今天</button>
+        </form>
+        <div class="daily-stat" aria-live="polite"><span id="stat-date">—</span><strong id="daily-submission-count">—</strong><span>單日提交表單</span></div>
+      </section>
       <p id="crm-message" class="message" role="status"></p>
       <div id="lead-list" class="lead-list" aria-live="polite"></div>
     </section>
   </main>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="crm.js?v=20260901-reset-fix"></script>
+  <script src="crm.js?v=20260905-date-filter"></script>
 </body>
 </html>
