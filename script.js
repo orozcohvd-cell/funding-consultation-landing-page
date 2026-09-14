@@ -8,8 +8,7 @@ const backButton = document.querySelector('#back-button');
 const form = document.querySelector('#lead-form');
 const message = document.querySelector('.form-message');
 const modal = document.querySelector('#success-modal');
-const submissionKey = 'funding-consultation-submitted';
-const lineUrl = 'https://lin.ee/ynD1DjM';
+const lineUrl = 'https://lin.ee/NdxqFfd';
 let selectedFunding = '';
 
 const trackTikTokEvent = (eventName, parameters = {}) => {
@@ -51,10 +50,6 @@ backButton.addEventListener('click', showLandingPage);
 
 form.addEventListener('submit', async (event) => {
   event.preventDefault();
-  if (localStorage.getItem(submissionKey)) {
-    message.textContent = '此裝置已提交過申請。';
-    return;
-  }
   const submitButton = form.querySelector('[type="submit"]');
   submitButton.disabled = true;
   message.textContent = '正在送出申請…';
@@ -77,7 +72,6 @@ form.addEventListener('submit', async (event) => {
     });
     const result = await response.json();
     if (!response.ok) throw new Error(result.error || '系統暫時無法送出。');
-    localStorage.setItem(submissionKey, 'true');
     trackTikTokEvent('Lead', { event_id: result.browserEventId });
     message.textContent = '';
     modal.hidden = false;

@@ -30,7 +30,7 @@
 1. 訪客選擇額度：10萬-30萬、30萬-80萬、80萬-180萬、180萬-300萬。
 2. 訪客提交姓名、年齡、電話、警示戶與已同意資料使用。
 3. 前端呼叫 `POST /api/leads`，服務端將資料存入 `leads`。
-4. 成功後顯示「已提交」，1 秒後前往 LINE：`https://lin.ee/ynD1DjM`。
+4. 成功後顯示「已提交」，1 秒後前往 LINE：`https://lin.ee/NdxqFfd`。
 5. CRM 專員將線索標記為已聯絡、有效諮詢、成交或無效。
 
 CRM 預設顯示臺灣時區（UTC+8）的當日線索；可選擇任一提交日期篩選，統計卡會顯示該日成功提交的表單總數。
@@ -57,8 +57,8 @@ Supabase 資料表：
 ### Meta Conversions API（由 CRM 服務端觸發）
 
 - `contacted` → `Contact`
-- `qualified` → `SubmitApplication`
-- `won` → `LoanApproved`（自訂深層事件）
+- `qualified` → `Lead`
+- `won` → 僅保留於 CRM，不回傳 Meta。
 
 Meta 回傳使用 `fbp`、`fbc`、IP 與瀏覽器標識；不會傳送表單中的姓名、電話、年齡或警示戶資料。回傳結果保存在 `lead_status_events.tiktok_response.meta`。
 

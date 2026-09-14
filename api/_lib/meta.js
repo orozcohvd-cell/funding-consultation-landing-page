@@ -2,8 +2,7 @@ const crypto = require('crypto');
 
 const statusEventMap = {
   contacted: 'Contact',
-  qualified: 'SubmitApplication',
-  won: 'LoanApproved',
+  qualified: 'Lead',
 };
 
 async function sendMetaStatusEvent({ lead, status }) {
@@ -32,7 +31,6 @@ async function sendMetaStatusEvent({ lead, status }) {
       action_source: 'website',
       event_source_url: process.env.SITE_URL || lead.source_url || '',
       user_data: userData,
-      custom_data: { lead_id: lead.id, pipeline_status: status },
     }],
   };
 

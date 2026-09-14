@@ -48,10 +48,22 @@ module.exports = async (req, res) => {
       body: JSON.stringify(lead),
     });
     const created = inserted?.[0];
-    await supabaseRequest('/rest/v1/lead_status_events', {
-      method: 'POST',
-      body: JSON.stringify({ lead_id: created.id, next_status: 'line_redirected', notes: '客戶已由表單送出並前往 LINE。', tiktok_delivery_status: 'skipped' }),
-    });
+    if (!created?.id) throw new Error('Lead insert returned no identifier.');
+
+    try {
+      await supabaseRequest('/rest/v1/lead_status_events', {
+        method: 'POST',
+        body: JSON.stringify({ lead_id: created.id, next_status: 'line_redirected', notes: '客戶已由表單送出並前往 LINE。', tiktok_delivery_status: 'skipped' }),
+      });
+    } catch (error) {
+      console.error('Lead status event recording failed:', {
+        leadId: created.id,
+        status: error.status || null,
+        details: error.details || null,
+        message: error.message,
+      });
+    }
+
     return json(res, 201, { leadId: created.id, browserEventId });
   } catch (error) {
     if (error.status === 409 || error.details?.code === '23505') return json(res, 409, { error: '此網路已提交過申請。' });
