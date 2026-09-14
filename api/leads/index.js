@@ -27,9 +27,9 @@ module.exports = async (req, res) => {
       phone,
       requested_amount: requestedAmount,
       warning_account: warningAccount,
-      status: 'line_redirected',
+      status: 'new',
       status_updated_at: new Date().toISOString(),
-      line_redirected_at: new Date().toISOString(),
+      line_redirected_at: null,
       consent_at: new Date().toISOString(),
       tiktok_click_id: String(payload.tiktokClickId || '').slice(0, 512) || null,
       browser_event_id: browserEventId,
@@ -53,7 +53,7 @@ module.exports = async (req, res) => {
     try {
       await supabaseRequest('/rest/v1/lead_status_events', {
         method: 'POST',
-        body: JSON.stringify({ lead_id: created.id, next_status: 'line_redirected', notes: '客戶已由表單送出並前往 LINE。', tiktok_delivery_status: 'skipped' }),
+        body: JSON.stringify({ lead_id: created.id, next_status: 'new', notes: '客戶已由表單送出，待確認 LINE 到達。', tiktok_delivery_status: 'skipped' }),
       });
     } catch (error) {
       console.error('Lead status event recording failed:', {

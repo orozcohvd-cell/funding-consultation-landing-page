@@ -13,8 +13,9 @@ const todayButton = document.querySelector('#today-button');
 const statDate = document.querySelector('#stat-date');
 const dailySubmissionCount = document.querySelector('#daily-submission-count');
 
-const statusLabels = { new: '新線索', line_redirected: '已前往 LINE', contacted: '已聯絡', qualified: '有效諮詢', won: '成交', lost: '無效' };
+const statusLabels = { new: '新線索', line_redirected: '已點擊加入 LINE', contacted: '已聯絡', qualified: '有效諮詢', won: '成交', lost: '無效' };
 const statusActions = [['contacted', '標記已聯絡'], ['qualified', '標記有效諮詢'], ['won', '標記成交'], ['lost', '標記無效']];
+const consultationCode = (leadId) => `L-${String(leadId || '').replace(/-/g, '').slice(0, 8).toUpperCase()}`;
 
 const setMessage = (target, text = '') => { target.textContent = text; };
 const formatTime = (value) => new Intl.DateTimeFormat('zh-TW', { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(value));
@@ -50,6 +51,7 @@ function leadCard(lead) {
     `年齡：${lead.age}`,
     `額度：${lead.requested_amount}`,
     `警示戶：${lead.warning_account ? '是' : '否'}`,
+    `諮詢編號：${consultationCode(lead.id)}`,
     `提交：${formatTime(lead.created_at)}`,
   ].forEach((text) => { const item = document.createElement('span'); item.textContent = text; meta.append(item); });
   details.append(title, document.createTextNode(' '), badge, meta);

@@ -8,8 +8,12 @@ const backButton = document.querySelector('#back-button');
 const form = document.querySelector('#lead-form');
 const message = document.querySelector('.form-message');
 const modal = document.querySelector('#success-modal');
+const consultationCode = document.querySelector('#consultation-code');
+const copyConsultationCodeButton = document.querySelector('#copy-consultation-code');
+const lineCta = document.querySelector('#line-cta');
 const lineUrl = 'https://lin.ee/NdxqFfd';
 let selectedFunding = '';
+let currentLeadId = '';
 
 const trackTikTokEvent = (eventName, parameters = {}) => {
   if (typeof window.ttq?.track === 'function') {
@@ -19,6 +23,18 @@ const trackTikTokEvent = (eventName, parameters = {}) => {
 
 const getTikTokClickId = () => new URLSearchParams(window.location.search).get('ttclid') || '';
 const getCookie = (name) => document.cookie.split('; ').find((value) => value.startsWith(`${name}=`))?.slice(name.length + 1) || '';
+const leadCode = (leadId) => `L-${String(leadId || '').replace(/-/g, '').slice(0, 8).toUpperCase()}`;
+
+const recordLineClick = () => {
+  if (!currentLeadId) return;
+  const body = JSON.stringify({});
+  const endpoint = `/api/leads/${encodeURIComponent(currentLeadId)}/line-click`;
+  if (navigator.sendBeacon) {
+    navigator.sendBeacon(endpoint, new Blob([body], { type: 'application/json' }));
+    return;
+  }
+  void fetch(endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body, keepalive: true });
+};
 
 const showLandingPage = () => {
   applicationPage.hidden = true;
@@ -48,6 +64,20 @@ continueButton.addEventListener('click', () => {
 });
 backButton.addEventListener('click', showLandingPage);
 
+copyConsultationCodeButton.addEventListener('click', async () => {
+  const code = consultationCode.textContent;
+  if (!code || code === '—') return;
+  try {
+    await navigator.clipboard.writeText(code);
+    copyConsultationCodeButton.textContent = '已複製';
+    window.setTimeout(() => { copyConsultationCodeButton.textContent = '複製編號'; }, 1800);
+  } catch {
+    copyConsultationCodeButton.textContent = '請長按複製';
+  }
+});
+
+lineCta.addEventListener('click', recordLineClick);
+
 form.addEventListener('submit', async (event) => {
   event.preventDefault();
   const submitButton = form.querySelector('[type="submit"]');
@@ -73,9 +103,11 @@ form.addEventListener('submit', async (event) => {
     const result = await response.json();
     if (!response.ok) throw new Error(result.error || '系統暫時無法送出。');
     trackTikTokEvent('Lead', { event_id: result.browserEventId });
+    currentLeadId = result.leadId;
+    consultationCode.textContent = leadCode(result.leadId);
+    lineCta.href = lineUrl;
     message.textContent = '';
     modal.hidden = false;
-    window.setTimeout(() => window.location.assign(lineUrl), 1000);
   } catch (error) {
     message.textContent = error.message;
     submitButton.disabled = false;
