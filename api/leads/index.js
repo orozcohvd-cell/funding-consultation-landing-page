@@ -33,7 +33,9 @@ module.exports = async (req, res) => {
       consent_at: new Date().toISOString(),
       tiktok_click_id: String(payload.tiktokClickId || '').slice(0, 512) || null,
       browser_event_id: browserEventId,
-      client_ip_hash: hashIp(clientIp(req)),
+      // A per-submission salt keeps the legacy unique column compatible
+      // while allowing multiple applications from the same network.
+      client_ip_hash: hashIp(`${clientIp(req)}:${browserEventId}`),
       source_url: String(payload.sourceUrl || '').slice(0, 2048) || null,
       metadata: {
         meta_fbp: String(payload.metaFbp || '').slice(0, 256) || null,
@@ -66,7 +68,6 @@ module.exports = async (req, res) => {
 
     return json(res, 201, { leadId: created.id, browserEventId });
   } catch (error) {
-    if (error.status === 409 || error.details?.code === '23505') return json(res, 409, { error: '此網路已提交過申請。' });
     console.error('Lead creation failed:', error.message);
     return json(res, 500, { error: '系統暫時無法送出，請稍後再試。' });
   }

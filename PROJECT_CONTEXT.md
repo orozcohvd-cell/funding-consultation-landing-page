@@ -16,7 +16,7 @@
 
 - `index.html`：訪客落地頁與 Meta／TikTok Pixel 基礎碼。
 - `script.js`：額度選擇、表單送出、TikTok 瀏覽器事件、LINE 跳轉。
-- `api/leads/index.js`：接收表單、寫入 Supabase、以 IP 雜湊限制重複提交。
+- `api/leads/index.js`：接收表單並寫入 Supabase；IP 雜湊僅供後台排查，不限制重複提交。
 - `crm.html`、`crm.js`、`crm.css`：專員 CRM。
 - `api/admin/leads.js`：讀取線索。
 - `api/admin/leads/[id]/status.js`：更新 CRM 狀態並觸發 TikTok 服務端深層事件。
@@ -45,7 +45,7 @@ Supabase 資料表：
 
 資料表已啟用 RLS，匿名與一般已驗證使用者沒有直接讀寫權限。CRM API 會先驗證 Supabase session，再檢查 `crm_staff`。
 
-`client_ip_hash` 為唯一值；同一 IP 僅能成功提交一次。IP 不以明文保存。
+`client_ip_hash` 為每筆提交各自加鹽的匿名值，不作為重複提交限制。IP 不以明文保存。
 
 ## 事件回傳
 
