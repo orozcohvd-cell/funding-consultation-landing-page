@@ -9,9 +9,8 @@ const form = document.querySelector('#lead-form');
 const message = document.querySelector('.form-message');
 const modal = document.querySelector('#success-modal');
 const consultationCode = document.querySelector('#consultation-code');
-const copyConsultationCodeButton = document.querySelector('#copy-consultation-code');
 const lineCta = document.querySelector('#line-cta');
-const lineUrl = 'https://lin.ee/NdxqFfd';
+const lineUrl = 'https://lin.ee/9a4T7qeq';
 let selectedFunding = '';
 let currentLeadId = '';
 
@@ -64,19 +63,19 @@ continueButton.addEventListener('click', () => {
 });
 backButton.addEventListener('click', showLandingPage);
 
-copyConsultationCodeButton.addEventListener('click', async () => {
+lineCta.addEventListener('click', async (event) => {
   const code = consultationCode.textContent;
   if (!code || code === '—') return;
-  try {
-    await navigator.clipboard.writeText(code);
-    copyConsultationCodeButton.textContent = '已複製';
-    window.setTimeout(() => { copyConsultationCodeButton.textContent = '複製編號'; }, 1800);
-  } catch {
-    copyConsultationCodeButton.textContent = '請長按複製';
-  }
-});
 
-lineCta.addEventListener('click', recordLineClick);
+  event.preventDefault();
+  recordLineClick();
+  try {
+    await navigator.clipboard.writeText(`諮詢編號：${code}`);
+  } catch {
+    // The on-screen code remains available if the browser blocks clipboard access.
+  }
+  window.location.assign(lineCta.href);
+});
 
 form.addEventListener('submit', async (event) => {
   event.preventDefault();
