@@ -104,7 +104,6 @@ form.addEventListener('submit', async (event) => {
     trackTikTokEvent('Lead', { event_id: result.browserEventId });
     currentLeadId = result.leadId;
     consultationCode.textContent = leadCode(result.leadId);
-    lineCta.href = lineUrl;
     message.textContent = '';
     modal.hidden = false;
   } catch (error) {
