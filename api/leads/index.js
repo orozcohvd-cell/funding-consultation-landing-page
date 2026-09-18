@@ -6,6 +6,13 @@ const allowedAmounts = new Set(['10萬-30萬', '30萬-80萬', '80萬-180萬', '1
 const bodyOf = (req) => typeof req.body === 'string' ? JSON.parse(req.body) : (req.body || {});
 const clientIp = (req) => String(req.headers['x-forwarded-for'] || req.socket?.remoteAddress || '').split(',')[0].trim();
 const hashIp = (ip) => crypto.createHmac('sha256', requireEnvironment('LEAD_HASH_SALT')).update(ip || 'unknown').digest('hex');
+const normalizePhone = (value) => {
+  const compact = String(value || '').replace(/[^\d+]/g, '');
+  if (compact.startsWith('+886')) return `0${compact.slice(4)}`;
+  if (compact.startsWith('886')) return `0${compact.slice(3)}`;
+  return compact;
+};
+const duplicateWindowMs = 24 * 60 * 60 * 1000;
 
 module.exports = async (req, res) => {
   if (req.method !== 'POST') return json(res, 405, { error: 'Method not allowed.' });
@@ -13,11 +20,17 @@ module.exports = async (req, res) => {
     const payload = bodyOf(req);
     const name = String(payload.name || '').trim();
     const age = Number(payload.age);
-    const phone = String(payload.phone || '').trim();
+    const phone = normalizePhone(payload.phone);
     const requestedAmount = String(payload.amount || '');
     const warningAccount = payload.warningAccount === true;
     if (!name || name.length > 80 || !Number.isInteger(age) || age < 18 || age > 120 || phone.length < 6 || phone.length > 32 || !allowedAmounts.has(requestedAmount) || typeof payload.warningAccount !== 'boolean') {
       return json(res, 400, { error: '請確認表單資料後重新送出。' });
+    }
+
+    const duplicateCutoff = new Date(Date.now() - duplicateWindowMs).toISOString();
+    const recentLeads = await supabaseRequest(`/rest/v1/leads?select=id&phone=eq.${encodeURIComponent(phone)}&created_at=gte.${encodeURIComponent(duplicateCutoff)}&limit=1`);
+    if (recentLeads?.length) {
+      return json(res, 409, { error: '此手機號碼已送出申請，請直接加入 LINE 等待專員聯繫。' });
     }
 
     const browserEventId = crypto.randomUUID();
