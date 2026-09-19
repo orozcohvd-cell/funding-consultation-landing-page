@@ -10,7 +10,7 @@ const message = document.querySelector('.form-message');
 const modal = document.querySelector('#success-modal');
 const consultationCode = document.querySelector('#consultation-code');
 const lineCta = document.querySelector('#line-cta');
-const lineUrl = 'https://lin.ee/9a4T7qeq';
+const lineUrl = 'https://lin.ee/OKRaTKK';
 let selectedFunding = '';
 let currentLeadId = '';
 
