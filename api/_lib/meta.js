@@ -20,7 +20,6 @@ async function sendMetaStatusEvent({ lead, status }) {
   const userData = {};
   if (metadata.meta_fbp) userData.fbp = metadata.meta_fbp;
   if (metadata.meta_fbc) userData.fbc = metadata.meta_fbc;
-  if (metadata.client_ip_address) userData.client_ip_address = metadata.client_ip_address;
   if (metadata.client_user_agent) userData.client_user_agent = metadata.client_user_agent;
 
   const payload = {

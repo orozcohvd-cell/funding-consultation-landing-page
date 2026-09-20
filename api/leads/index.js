@@ -53,7 +53,6 @@ module.exports = async (req, res) => {
       metadata: {
         meta_fbp: String(payload.metaFbp || '').slice(0, 256) || null,
         meta_fbc: String(payload.metaFbc || '').slice(0, 256) || null,
-        client_ip_address: clientIp(req) || null,
         client_user_agent: String(req.headers['user-agent'] || '').slice(0, 1024) || null,
       },
     };

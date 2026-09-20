@@ -60,7 +60,7 @@ Supabase 資料表：
 - `qualified` → `Lead`
 - `won` → 僅保留於 CRM，不回傳 Meta。
 
-Meta 回傳使用 `fbp`、`fbc`、IP 與瀏覽器標識；不會傳送表單中的姓名、電話、年齡或警示戶資料。回傳結果保存在 `lead_status_events.tiktok_response.meta`。
+Meta 回傳使用 `fbp`、`fbc` 與瀏覽器標識；不會傳送表單中的姓名、電話、年齡、警示戶或明文 IP 資料。回傳結果保存在 `lead_status_events.tiktok_response.meta`。
 
 ### TikTok Pixel
 
