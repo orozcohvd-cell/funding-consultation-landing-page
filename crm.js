@@ -9,9 +9,12 @@ const crmMessage = document.querySelector('#crm-message');
 const leadList = document.querySelector('#lead-list');
 const dateFilterForm = document.querySelector('#date-filter-form');
 const filterDate = document.querySelector('#filter-date');
+const warningAccountFilter = document.querySelector('#warning-account-filter');
 const todayButton = document.querySelector('#today-button');
 const statDate = document.querySelector('#stat-date');
 const dailySubmissionCount = document.querySelector('#daily-submission-count');
+const warningYesCount = document.querySelector('#warning-yes-count');
+const warningNoCount = document.querySelector('#warning-no-count');
 
 const statusLabels = { new: '新線索', line_redirected: '已點擊加入 LINE', contacted: '已聯絡', qualified: '有效諮詢', won: '成交', lost: '無效' };
 const statusActions = [['contacted', '標記已聯絡'], ['qualified', '標記有效諮詢'], ['won', '標記成交'], ['lost', '標記無效']];
@@ -87,7 +90,7 @@ async function loadLeads() {
   setMessage(crmMessage, '正在載入線索…');
   try {
     const selectedDate = filterDate.value;
-    const query = new URLSearchParams({ date: selectedDate });
+    const query = new URLSearchParams({ date: selectedDate, warningAccount: warningAccountFilter.value });
     const { leads, stats } = await api(`/api/admin/leads?${query.toString()}`);
     leadList.replaceChildren();
     if (!leads.length) leadList.textContent = '目前尚無線索。';
@@ -95,6 +98,8 @@ async function loadLeads() {
     const reportDate = stats?.selectedDate || selectedDate;
     statDate.textContent = reportDate ? formatDate(reportDate) : '全部日期';
     dailySubmissionCount.textContent = String(stats?.submissionCount ?? leads.length);
+    warningYesCount.textContent = String(stats?.warningYesCount ?? 0);
+    warningNoCount.textContent = String(stats?.warningNoCount ?? 0);
     setMessage(crmMessage);
   } catch (error) { setMessage(crmMessage, error.message); }
 }

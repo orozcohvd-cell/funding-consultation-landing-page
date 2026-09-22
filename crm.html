@@ -33,16 +33,20 @@
       <section class="crm-tools" aria-label="線索篩選與統計">
         <form id="date-filter-form" class="date-filter">
           <label for="filter-date">提交日期<input id="filter-date" type="date" required /></label>
+          <label for="warning-account-filter">是否警示戶<select id="warning-account-filter"><option value="all">全部</option><option value="yes">是</option><option value="no">否</option></select></label>
           <button type="submit">查詢</button>
           <button id="today-button" class="secondary" type="button">今天</button>
         </form>
-        <div class="daily-stat" aria-live="polite"><span id="stat-date">—</span><strong id="daily-submission-count">—</strong><span>單日提交表單</span></div>
+        <div class="crm-stats" aria-live="polite">
+          <div class="daily-stat"><span id="stat-date">—</span><strong id="daily-submission-count">—</strong><span>單日提交表單</span></div>
+          <div class="warning-stat"><span>警示戶：是</span><strong id="warning-yes-count">—</strong><span>否</span><strong id="warning-no-count">—</strong></div>
+        </div>
       </section>
       <p id="crm-message" class="message" role="status"></p>
       <div id="lead-list" class="lead-list" aria-live="polite"></div>
     </section>
   </main>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="crm.js?v=20260905-date-filter"></script>
+  <script src="crm.js?v=20260922-warning-filter"></script>
 </body>
 </html>

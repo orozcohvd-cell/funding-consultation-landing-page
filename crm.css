@@ -19,10 +19,14 @@ input, textarea { width: 100%; border: 1px solid #c8d8bf; border-radius: 9px; pa
 .crm-tools { display: flex; justify-content: space-between; align-items: end; gap: 16px; margin: 20px 0 8px; }
 .date-filter { display: flex; align-items: end; gap: 8px; margin: 0; }
 .date-filter label { min-width: 164px; }
-.date-filter input { padding: 9px 11px; }
+.date-filter input, .date-filter select { padding: 9px 11px; }
+.date-filter select { width: 100%; border: 1px solid #c8d8bf; border-radius: 9px; background: #fff; color: #193020; }
+.crm-stats { display: flex; gap: 10px; align-items: stretch; }
 .daily-stat { display: grid; grid-template-columns: auto auto; align-items: baseline; gap: 0 10px; min-width: 200px; padding: 12px 16px; border-radius: 12px; background: #e3eddd; color: #315336; }
 .daily-stat strong { grid-row: span 2; font-size: 32px; line-height: 1; color: #14532d; }
 .daily-stat span { font-size: 12px; font-weight: 700; }
+.warning-stat { display: grid; grid-template-columns: auto auto; align-content: center; gap: 4px 12px; min-width: 132px; padding: 12px 16px; border-radius: 12px; background: #fff5d7; color: #674b0b; font-size: 12px; font-weight: 800; }
+.warning-stat strong { font-size: 20px; line-height: 1; color: #8b5d00; }
 .lead-list { display: grid; gap: 14px; }
 .lead-card { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 18px; padding: 20px; border-radius: 14px; background: #fff; box-shadow: 0 8px 24px #17320e12; }
 .lead-card h2 { margin: 0; font-size: 20px; }
@@ -30,4 +34,4 @@ input, textarea { width: 100%; border: 1px solid #c8d8bf; border-radius: 9px; pa
 .badge { display: inline-block; border-radius: 999px; padding: 4px 9px; background: #dbffad; color: #17320e; font-size: 12px; font-weight: 800; }
 .notes { width: min(360px, 100%); min-height: 66px; margin: 10px 0; resize: vertical; }
 .status-actions button { padding: 8px 10px; font-size: 13px; }
-@media (max-width: 700px) { .crm-shell { width: min(100% - 24px, 1100px); padding-top: 24px; } .crm-header, .lead-card { grid-template-columns: 1fr; align-items: start; } .crm-header, .crm-tools { display: grid; } .header-actions, .date-filter { width: 100%; } .header-actions button, .date-filter button { flex: 1; } .date-filter label { min-width: 0; flex: 1 1 100%; } .daily-stat { width: 100%; } .login-card { padding: 24px; } }
+@media (max-width: 700px) { .crm-shell { width: min(100% - 24px, 1100px); padding-top: 24px; } .crm-header, .lead-card { grid-template-columns: 1fr; align-items: start; } .crm-header, .crm-tools { display: grid; } .header-actions, .date-filter, .crm-stats { width: 100%; } .header-actions button, .date-filter button { flex: 1; } .date-filter label { min-width: 0; flex: 1 1 100%; } .daily-stat, .warning-stat { flex: 1; } .login-card { padding: 24px; } }
