@@ -26,6 +26,7 @@ module.exports = async (req, res) => {
     if (!name || name.length > 80 || !Number.isInteger(age) || age < 18 || age > 120 || phone.length < 6 || phone.length > 32 || !allowedAmounts.has(requestedAmount) || typeof payload.warningAccount !== 'boolean') {
       return json(res, 400, { error: '請確認表單資料後重新送出。' });
     }
+    if (warningAccount) return json(res, 422, { error: '警示戶目前無法提供本項資金媒合服務。' });
 
     const duplicateCutoff = new Date(Date.now() - duplicateWindowMs).toISOString();
     const recentLeads = await supabaseRequest(`/rest/v1/leads?select=id&phone=eq.${encodeURIComponent(phone)}&created_at=gte.${encodeURIComponent(duplicateCutoff)}&limit=1`);

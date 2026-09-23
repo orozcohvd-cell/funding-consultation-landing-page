@@ -8,8 +8,11 @@ const backButton = document.querySelector('#back-button');
 const form = document.querySelector('#lead-form');
 const message = document.querySelector('.form-message');
 const modal = document.querySelector('#success-modal');
+const eligibilityModal = document.querySelector('#eligibility-modal');
 const consultationCode = document.querySelector('#consultation-code');
 const lineCta = document.querySelector('#line-cta');
+const warningAccountField = form.elements['warning-account'];
+const warningAccountBlockKey = 'funding-warning-account-blocked';
 let selectedFunding = '';
 let currentLeadId = '';
 
@@ -22,6 +25,18 @@ const trackTikTokEvent = (eventName, parameters = {}) => {
 const getTikTokClickId = () => new URLSearchParams(window.location.search).get('ttclid') || '';
 const getCookie = (name) => document.cookie.split('; ').find((value) => value.startsWith(`${name}=`))?.slice(name.length + 1) || '';
 const leadCode = (leadId) => `L-${String(leadId || '').replace(/-/g, '').slice(0, 8).toUpperCase()}`;
+const isWarningAccountBlocked = () => localStorage.getItem(warningAccountBlockKey) === '1';
+
+const lockApplication = () => {
+  selectedFunding = '';
+  amountButtons.forEach((button) => {
+    button.classList.remove('is-selected');
+    button.disabled = true;
+    button.setAttribute('aria-disabled', 'true');
+  });
+  continueButton.disabled = true;
+  continueButton.textContent = '目前無法繼續申請';
+};
 
 const recordLineClick = () => {
   if (!currentLeadId) return;
@@ -41,6 +56,11 @@ const showLandingPage = () => {
 };
 
 const showApplicationPage = () => {
+  if (isWarningAccountBlocked()) {
+    lockApplication();
+    showLandingPage();
+    return;
+  }
   landingPage.hidden = true;
   applicationPage.hidden = false;
   selectedAmount.textContent = selectedFunding;
@@ -48,8 +68,19 @@ const showApplicationPage = () => {
   window.scrollTo(0, 0);
 };
 
+const blockWarningAccountApplication = () => {
+  localStorage.setItem(warningAccountBlockKey, '1');
+  form.reset();
+  message.textContent = '';
+  lockApplication();
+  showLandingPage();
+  eligibilityModal.hidden = false;
+  window.setTimeout(() => { eligibilityModal.hidden = true; }, 2600);
+};
+
 amountButtons.forEach((button) => {
   button.addEventListener('click', () => {
+    if (isWarningAccountBlocked()) return;
     selectedFunding = button.dataset.amount;
     amountButtons.forEach((option) => option.classList.toggle('is-selected', option === button));
     continueButton.disabled = false;
@@ -57,10 +88,15 @@ amountButtons.forEach((button) => {
 });
 
 continueButton.addEventListener('click', () => {
+  if (isWarningAccountBlocked()) return;
   trackTikTokEvent('ViewContent');
   showApplicationPage();
 });
 backButton.addEventListener('click', showLandingPage);
+
+warningAccountField.addEventListener('change', () => {
+  if (warningAccountField.value === 'yes') blockWarningAccountApplication();
+});
 
 lineCta.addEventListener('click', async (event) => {
   const code = consultationCode.textContent;
@@ -78,6 +114,10 @@ lineCta.addEventListener('click', async (event) => {
 
 form.addEventListener('submit', async (event) => {
   event.preventDefault();
+  if (isWarningAccountBlocked() || warningAccountField.value === 'yes') {
+    blockWarningAccountApplication();
+    return;
+  }
   const submitButton = form.querySelector('[type="submit"]');
   submitButton.disabled = true;
   message.textContent = '正在送出申請…';
@@ -110,3 +150,5 @@ form.addEventListener('submit', async (event) => {
     submitButton.disabled = false;
   }
 });
+
+if (isWarningAccountBlocked()) lockApplication();
