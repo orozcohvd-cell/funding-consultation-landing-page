@@ -57,7 +57,14 @@ function leadCard(lead) {
     `諮詢編號：${consultationCode(lead.id)}`,
     `提交：${formatTime(lead.created_at)}`,
   ].forEach((text) => { const item = document.createElement('span'); item.textContent = text; meta.append(item); });
-  details.append(title, document.createTextNode(' '), badge, meta);
+  details.append(title, document.createTextNode(' '), badge);
+  if (lead.submission_blocked) {
+    const blockBadge = document.createElement('span');
+    blockBadge.className = 'badge block-badge';
+    blockBadge.textContent = '已屏蔽再次提交';
+    details.append(document.createTextNode(' '), blockBadge);
+  }
+  details.append(meta);
 
   const controls = document.createElement('div');
   const notes = document.createElement('textarea');
@@ -81,6 +88,23 @@ function leadCard(lead) {
     });
     actions.append(button);
   });
+  const blockButton = document.createElement('button');
+  blockButton.type = 'button';
+  blockButton.className = lead.submission_blocked ? 'secondary' : 'block-button';
+  blockButton.textContent = lead.submission_blocked ? '解除提交屏蔽' : '屏蔽再次提交';
+  blockButton.title = lead.submission_blocked && lead.submission_block_reason ? `屏蔽原因：${lead.submission_block_reason}` : '';
+  blockButton.addEventListener('click', async () => {
+    setMessage(crmMessage, lead.submission_blocked ? '正在解除屏蔽…' : '正在屏蔽再次提交…');
+    try {
+      await api(`/api/admin/leads/${encodeURIComponent(lead.id)}/submission-block`, {
+        method: lead.submission_blocked ? 'DELETE' : 'POST',
+        body: lead.submission_blocked ? undefined : JSON.stringify({ reason: notes.value }),
+      });
+      await loadLeads();
+      setMessage(crmMessage, lead.submission_blocked ? '已解除提交屏蔽。' : '已屏蔽此手機號碼再次提交。');
+    } catch (error) { setMessage(crmMessage, error.message); }
+  });
+  actions.append(blockButton);
   controls.append(notes, actions);
   card.append(details, controls);
   return card;

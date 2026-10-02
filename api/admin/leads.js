@@ -32,8 +32,19 @@ module.exports = async (req, res) => {
       warningAccount === 'all' ? Promise.resolve(null) : supabaseRequest(`/rest/v1/leads?${leadQuery.toString()}`),
     ]);
     const displayedLeads = leads || allLeads;
+    const blocks = await supabaseRequest('/rest/v1/submission_blocks?select=phone,reason,created_at');
+    const blocksByPhone = new Map((blocks || []).map((block) => [block.phone, block]));
+    const withBlockState = displayedLeads.map((lead) => {
+      const block = blocksByPhone.get(lead.phone);
+      return {
+        ...lead,
+        submission_blocked: Boolean(block),
+        submission_block_reason: block?.reason || null,
+        submission_blocked_at: block?.created_at || null,
+      };
+    });
     json(res, 200, {
-      leads: displayedLeads,
+      leads: withBlockState,
       stats: {
         selectedDate: selectedDate || null,
         submissionCount: allLeads.length,

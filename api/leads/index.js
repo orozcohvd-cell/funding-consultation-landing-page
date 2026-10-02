@@ -28,6 +28,11 @@ module.exports = async (req, res) => {
     }
     if (warningAccount) return json(res, 422, { error: '警示戶目前無法提供本項資金媒合服務。' });
 
+    const submissionBlocks = await supabaseRequest(`/rest/v1/submission_blocks?select=id&phone=eq.${encodeURIComponent(phone)}&limit=1`);
+    if (submissionBlocks?.length) {
+      return json(res, 403, { error: '此手機號碼目前無法再次提交申請，請等待專員聯繫。' });
+    }
+
     const duplicateCutoff = new Date(Date.now() - duplicateWindowMs).toISOString();
     const recentLeads = await supabaseRequest(`/rest/v1/leads?select=id&phone=eq.${encodeURIComponent(phone)}&created_at=gte.${encodeURIComponent(duplicateCutoff)}&limit=1`);
     if (recentLeads?.length) {

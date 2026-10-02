@@ -43,10 +43,11 @@ Supabase 資料表：
 - `leads`：原始線索與目前狀態。
 - `lead_status_events`：狀態歷程與 TikTok 回傳結果。
 - `crm_staff`：可登入 CRM 的專員白名單。
+- `submission_blocks`：由 CRM 專員設定的手機號碼提交屏蔽記錄。
 
 資料表已啟用 RLS，匿名與一般已驗證使用者沒有直接讀寫權限。CRM API 會先驗證 Supabase session，再檢查 `crm_staff`。
 
-`client_ip_hash` 為每筆提交各自加鹽的匿名值，不作為重複提交限制。IP 不以明文保存；同一標準化手機號碼於 24 小時內僅能成功送出一次，避免重複觸發廣告 Lead 事件。
+`client_ip_hash` 為每筆提交各自加鹽的匿名值，不作為重複提交限制。IP 不以明文保存；同一標準化手機號碼於 24 小時內僅能成功送出一次，避免重複觸發廣告 Lead 事件。CRM 專員可另外永久屏蔽特定手機號碼；被屏蔽者不會建立新線索或觸發廣告 Lead，直到專員解除屏蔽。
 
 ## 事件回傳
 

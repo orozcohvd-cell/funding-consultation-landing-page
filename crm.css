@@ -32,6 +32,9 @@ input, textarea { width: 100%; border: 1px solid #c8d8bf; border-radius: 9px; pa
 .lead-card h2 { margin: 0; font-size: 20px; }
 .lead-meta { display: flex; flex-wrap: wrap; gap: 7px 14px; margin: 10px 0; color: #4b5e4d; font-size: 14px; }
 .badge { display: inline-block; border-radius: 999px; padding: 4px 9px; background: #dbffad; color: #17320e; font-size: 12px; font-weight: 800; }
+.block-badge { background: #ffe1dc; color: #942c1d; }
 .notes { width: min(360px, 100%); min-height: 66px; margin: 10px 0; resize: vertical; }
 .status-actions button { padding: 8px 10px; font-size: 13px; }
+.status-actions .block-button { background: #a83a26; }
+.status-actions .block-button:hover { background: #842917; }
 @media (max-width: 700px) { .crm-shell { width: min(100% - 24px, 1100px); padding-top: 24px; } .crm-header, .lead-card { grid-template-columns: 1fr; align-items: start; } .crm-header, .crm-tools { display: grid; } .header-actions, .date-filter, .crm-stats { width: 100%; } .header-actions button, .date-filter button { flex: 1; } .date-filter label { min-width: 0; flex: 1 1 100%; } .daily-stat, .warning-stat { flex: 1; } .login-card { padding: 24px; } }
