@@ -1,17 +1,12 @@
 const crypto = require('crypto');
 const { json, requireEnvironment, supabaseRequest } = require('../_lib/supabase');
+const { CentralPhoneBlockUnavailableError, checkPhoneBlock, normalizeTaiwanPhone } = require('../_lib/central-phone-block');
 
 const allowedAmounts = new Set(['10萬-30萬', '30萬-80萬', '80萬-180萬', '180萬-300萬']);
 
 const bodyOf = (req) => typeof req.body === 'string' ? JSON.parse(req.body) : (req.body || {});
 const clientIp = (req) => String(req.headers['x-forwarded-for'] || req.socket?.remoteAddress || '').split(',')[0].trim();
 const hashIp = (ip) => crypto.createHmac('sha256', requireEnvironment('LEAD_HASH_SALT')).update(ip || 'unknown').digest('hex');
-const normalizePhone = (value) => {
-  const compact = String(value || '').replace(/[^\d+]/g, '');
-  if (compact.startsWith('+886')) return `0${compact.slice(4)}`;
-  if (compact.startsWith('886')) return `0${compact.slice(3)}`;
-  return compact;
-};
 const duplicateWindowMs = 24 * 60 * 60 * 1000;
 
 module.exports = async (req, res) => {
@@ -20,13 +15,20 @@ module.exports = async (req, res) => {
     const payload = bodyOf(req);
     const name = String(payload.name || '').trim();
     const age = Number(payload.age);
-    const phone = normalizePhone(payload.phone);
+    const phone = normalizeTaiwanPhone(payload.phone);
     const requestedAmount = String(payload.amount || '');
     const warningAccount = payload.warningAccount === true;
-    if (!name || name.length > 80 || !Number.isInteger(age) || age < 18 || age > 120 || phone.length < 6 || phone.length > 32 || !allowedAmounts.has(requestedAmount) || typeof payload.warningAccount !== 'boolean') {
+    if (!name || name.length > 80 || !Number.isInteger(age) || age < 18 || age > 120 || !phone || !allowedAmounts.has(requestedAmount) || typeof payload.warningAccount !== 'boolean') {
       return json(res, 400, { error: '請確認表單資料後重新送出。' });
     }
     if (warningAccount) return json(res, 422, { error: '警示戶目前無法提供本項資金媒合服務。' });
+
+    // This check runs before every local block, duplicate, and insert path.
+    // Any central timeout or malformed reply fails closed without creating a lead.
+    const centralBlockState = await checkPhoneBlock(phone);
+    if (centralBlockState.blocked) {
+      return json(res, 403, { error: '此手機號碼目前無法再次提交申請，請等待專員聯繫。' });
+    }
 
     const submissionBlocks = await supabaseRequest(`/rest/v1/submission_blocks?select=id&phone=eq.${encodeURIComponent(phone)}&limit=1`);
     if (submissionBlocks?.length) {
@@ -86,6 +88,9 @@ module.exports = async (req, res) => {
 
     return json(res, 201, { leadId: created.id, browserEventId });
   } catch (error) {
+    if (error instanceof CentralPhoneBlockUnavailableError || error?.code === 'central_phone_block_unavailable') {
+      return json(res, 503, { error: '系統暫時無法驗證申請資格，請稍後再試。' });
+    }
     console.error('Lead creation failed:', error.message);
     return json(res, 500, { error: '系統暫時無法送出，請稍後再試。' });
   }
