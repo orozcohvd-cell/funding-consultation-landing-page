@@ -180,9 +180,8 @@ async function assertPhoneBlock(phone, sourceRuleId, options) {
 
 async function revokePhoneBlock(phone, sourceRuleId, options) {
   if (!validSourceRuleId(sourceRuleId)) throw new CentralPhoneBlockInputError();
-  const state = await callCentralPhoneBlock({ op: 'revoke', phoneHmac: phoneHmac(phone, options), sourceRuleId }, options);
-  if (state.blocked) throw new CentralPhoneBlockUnavailableError();
-  return state;
+  // Another site's independent assertion can keep the effective state blocked.
+  return callCentralPhoneBlock({ op: 'revoke', phoneHmac: phoneHmac(phone, options), sourceRuleId }, options);
 }
 
 module.exports = {

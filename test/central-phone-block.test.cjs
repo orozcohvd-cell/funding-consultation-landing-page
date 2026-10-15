@@ -9,6 +9,7 @@ const {
   normalizeLegacyStoredPhone,
   normalizeTaiwanPhone,
   phoneHmac,
+  revokePhoneBlock,
   signCentralRequest,
 } = require('../api/_lib/central-phone-block');
 
@@ -94,4 +95,21 @@ test('signs the exact versioned central request payload', () => {
   assert.equal(signed.headers['x-central-block-nonce'], nonce);
   assert.equal(signed.headers['x-central-block-signature'], expectedSignature);
   assert.equal(signed.serializedBody.includes('0912345678'), false);
+});
+
+test('a legacy revoke succeeds when the current site still blocks the phone', async () => {
+  const state = await revokePhoneBlock(
+    '0912345678',
+    'submission-block:123e4567-e89b-42d3-a456-426614174000',
+    {
+      url: 'https://central.example/functions/v1/phone-block',
+      hmacSecret: 'test-hmac-secret',
+      callerSecret: 'test-caller-secret',
+      timestamp: '1700000000000',
+      nonce: 'd'.repeat(64),
+      fetchImpl: async () => ({ ok: true, json: async () => ({ blocked: true }) }),
+    },
+  );
+
+  assert.deepEqual(state, { available: false, blocked: true });
 });

@@ -28,9 +28,9 @@ module.exports = async (req, res) => {
       if (!existingBlock?.id) return json(res, 200, { blocked: false, alreadyCleared: true });
       // The central rule is authoritative. If the following local delete fails,
       // the legacy local block remains as the conservative fallback.
-      await revokePhoneBlock(canonicalPhone, `submission-block:${existingBlock.id}`);
+      const centralState = await revokePhoneBlock(canonicalPhone, `submission-block:${existingBlock.id}`);
       await supabaseRequest(`/rest/v1/submission_blocks?id=eq.${encodeURIComponent(existingBlock.id)}`, { method: 'DELETE' });
-      return json(res, 200, { blocked: false });
+      return json(res, 200, { blocked: false, effectiveBlocked: centralState.blocked });
     }
 
     const { reason = '' } = bodyOf(req);

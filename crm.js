@@ -96,12 +96,16 @@ function leadCard(lead) {
   blockButton.addEventListener('click', async () => {
     setMessage(crmMessage, lead.submission_blocked ? '正在解除屏蔽…' : '正在屏蔽再次提交…');
     try {
-      await api(`/api/admin/leads/${encodeURIComponent(lead.id)}/submission-block`, {
+      const result = await api(`/api/admin/leads/${encodeURIComponent(lead.id)}/submission-block`, {
         method: lead.submission_blocked ? 'DELETE' : 'POST',
         body: lead.submission_blocked ? undefined : JSON.stringify({ reason: notes.value }),
       });
       await loadLeads();
-      setMessage(crmMessage, lead.submission_blocked ? '已解除提交屏蔽。' : '已屏蔽此手機號碼再次提交。');
+      setMessage(crmMessage, lead.submission_blocked
+        ? result.effectiveBlocked
+          ? '已解除本網站屏蔽；另一落地頁仍封鎖此手機號碼。'
+          : '已解除提交屏蔽。'
+        : '已屏蔽此手機號碼再次提交。');
     } catch (error) { setMessage(crmMessage, error.message); }
   });
   actions.append(blockButton);
