@@ -22,6 +22,42 @@ const trackTikTokEvent = (eventName, parameters = {}) => {
   }
 };
 
+const sha256 = async (value) => {
+  if (!window.crypto?.subtle || typeof TextEncoder === 'undefined') return '';
+  const data = new TextEncoder().encode(String(value));
+  const digest = await window.crypto.subtle.digest('SHA-256', data);
+  return Array.from(new Uint8Array(digest), (byte) => byte.toString(16).padStart(2, '0')).join('');
+};
+
+const taiwanPhoneToE164 = (value) => {
+  const normalized = String(value || '').trim().replace(/[\s()-]/g, '');
+  if (/^09\d{8}$/.test(normalized)) return `+886${normalized.slice(1)}`;
+  if (/^\+88609\d{8}$/.test(normalized)) return `+886${normalized.slice(5)}`;
+  if (/^88609\d{8}$/.test(normalized)) return `+886${normalized.slice(4)}`;
+  if (/^\+8869\d{8}$/.test(normalized)) return normalized;
+  if (/^8869\d{8}$/.test(normalized)) return `+${normalized}`;
+  return '';
+};
+
+const identifyTikTokLead = async ({ phone, leadId }) => {
+  if (typeof window.ttq?.identify !== 'function' || !leadId) return;
+
+  try {
+    const e164Phone = taiwanPhoneToE164(phone);
+    const [phoneNumber, externalId] = await Promise.all([
+      e164Phone ? sha256(e164Phone) : '',
+      sha256(`lead:${leadId}`),
+    ]);
+    const identifiers = {};
+    if (phoneNumber) identifiers.phone_number = phoneNumber;
+    if (externalId) identifiers.external_id = externalId;
+    if (Object.keys(identifiers).length) window.ttq.identify(identifiers);
+  } catch (error) {
+    // Measurement must never prevent a customer from completing their application.
+    console.warn('TikTok manual advanced matching was unavailable.', error);
+  }
+};
+
 const getTikTokClickId = () => new URLSearchParams(window.location.search).get('ttclid') || '';
 const getCookie = (name) => document.cookie.split('; ').find((value) => value.startsWith(`${name}=`))?.slice(name.length + 1) || '';
 const leadCode = (leadId) => `L-${String(leadId || '').replace(/-/g, '').slice(0, 8).toUpperCase()}`;
@@ -140,6 +176,9 @@ form.addEventListener('submit', async (event) => {
     });
     const result = await response.json();
     if (!response.ok) throw new Error(result.error || '系統暫時無法送出。');
+    if (data.get('tiktok-match-consent') === 'on') {
+      await identifyTikTokLead({ phone: data.get('phone'), leadId: result.leadId });
+    }
     trackTikTokEvent('Lead', { event_id: result.browserEventId });
     currentLeadId = result.leadId;
     consultationCode.textContent = leadCode(result.leadId);
