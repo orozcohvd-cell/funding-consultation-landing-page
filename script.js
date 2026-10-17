@@ -130,10 +130,6 @@ continueButton.addEventListener('click', () => {
 });
 backButton.addEventListener('click', showLandingPage);
 
-warningAccountField.addEventListener('change', () => {
-  if (warningAccountField.value === 'yes') blockWarningAccountApplication();
-});
-
 lineCta.addEventListener('click', async (event) => {
   const code = consultationCode.textContent;
   if (!code || code === '—') return;
