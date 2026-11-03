@@ -3,6 +3,16 @@ const { json, requireEnvironment, supabaseRequest } = require('../_lib/supabase'
 const { CentralPhoneBlockUnavailableError, checkPhoneBlock, normalizeTaiwanPhone } = require('../_lib/central-phone-block');
 
 const allowedAmounts = new Set(['10萬-30萬', '30萬-80萬', '80萬-180萬', '180萬-300萬']);
+const exactAmountRanges = new Map([
+  ['100000', '10萬-30萬'],
+  ['200000', '10萬-30萬'],
+  ['300000', '30萬-80萬'],
+  ['500000', '30萬-80萬'],
+  ['1000000', '80萬-180萬'],
+  ['1500000', '80萬-180萬'],
+  ['3000000', '180萬-300萬'],
+]);
+const allowedMonths = new Set([36, 48, 60, 120]);
 
 const bodyOf = (req) => typeof req.body === 'string' ? JSON.parse(req.body) : (req.body || {});
 const clientIp = (req) => String(req.headers['x-forwarded-for'] || req.socket?.remoteAddress || '').split(',')[0].trim();
@@ -16,9 +26,13 @@ module.exports = async (req, res) => {
     const name = String(payload.name || '').trim();
     const age = Number(payload.age);
     const phone = normalizeTaiwanPhone(payload.phone);
-    const requestedAmount = String(payload.amount || '');
+    const rawAmount = String(payload.amount || '');
+    const requestedAmount = exactAmountRanges.get(rawAmount) || rawAmount;
+    const estimateMonths = Number(payload.months);
+    const assumedAnnualRate = Number(payload.assumedAnnualRate);
+    const isExactAmount = exactAmountRanges.has(rawAmount);
     const warningAccount = payload.warningAccount === true;
-    if (!name || name.length > 80 || !Number.isInteger(age) || age < 18 || age > 120 || !phone || !allowedAmounts.has(requestedAmount) || typeof payload.warningAccount !== 'boolean') {
+    if (!name || name.length > 80 || !Number.isInteger(age) || age < 18 || age > 120 || !phone || !allowedAmounts.has(requestedAmount) || typeof payload.warningAccount !== 'boolean' || (isExactAmount && (!allowedMonths.has(estimateMonths) || !Number.isFinite(assumedAnnualRate) || assumedAnnualRate < .1 || assumedAnnualRate > 20))) {
       return json(res, 400, { error: '請確認表單資料後重新送出。' });
     }
     if (warningAccount) return json(res, 422, { error: '警示戶目前無法提供本項資金媒合服務。' });
@@ -62,6 +76,7 @@ module.exports = async (req, res) => {
         meta_fbp: String(payload.metaFbp || '').slice(0, 256) || null,
         meta_fbc: String(payload.metaFbc || '').slice(0, 256) || null,
         client_user_agent: String(req.headers['user-agent'] || '').slice(0, 1024) || null,
+        estimate: isExactAmount ? { amount: Number(rawAmount), months: estimateMonths, assumed_annual_rate: assumedAnnualRate } : null,
       },
     };
     const inserted = await supabaseRequest('/rest/v1/leads', {

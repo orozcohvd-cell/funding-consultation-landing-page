@@ -1,11 +1,11 @@
 # 資金諮詢落地頁
 
-純靜態、手機優先的 FB 廣告落地頁。素材已收錄於 `assets/`。
+手機優先的資金試算與諮詢落地頁。首頁試算後進入 `contact.html` 填寫表單，表單由 `/api/leads` 接收並寫入 Supabase。
 
 ## 本機預覽
 
-直接開啟 `index.html`，或以任一靜態網站服務器預覽。
+以本機網站服務器開啟 `index.html` 預覽。直接用檔案網址開啟時，無法測試 `/api/leads`。
 
 ## 部署
 
-可上傳此資料夾全部檔案到 Netlify、Vercel、Cloudflare Pages 或既有的靜態網站主機。表單目前為前端成功提示；正式投放前，請將 `script.js` 串接到已授權的 CRM／表單接收端，並補上品牌資料、隱私權政策及必要法規揭露。
+本專案部署於 Vercel，並使用現有 Supabase CRM。正式設定與事件流程見 `PROJECT_CONTEXT.md`。

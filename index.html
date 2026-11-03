@@ -1,13 +1,11 @@
 <!doctype html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="線上資金需求諮詢服務，填寫資料後由專人協助了解可行方案。" />
-  <title>資金需求諮詢｜專人協助評估</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="先試算資金需求與每月還款參考 再由專員協助了解可行方案">
+  <title>線上額度試算 先試算 再安心規劃</title>
   <script>
-    // Supabase only permits the stable production root URL for recovery emails.
-    // Pass recovery credentials straight through to the dedicated password page.
     (function () {
       var hash = new URLSearchParams(window.location.hash.slice(1));
       var query = new URLSearchParams(window.location.search);
@@ -16,10 +14,7 @@
       }
     }());
   </script>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=20260920-line-cta-v2" />
+  <link rel="stylesheet" href="site.css?v=20261103">
   <!-- Meta Pixel Code -->
   <script>
   !function(f,b,e,v,n,t,s)
@@ -43,38 +38,89 @@
   }(window, document, 'ttq');
   </script>
   <!-- TikTok Pixel Code End -->
-  <style>.hero{height:500px;min-height:500px}.arrow-reveal-button{position:relative;display:flex;width:min(444px,100%);min-height:82px;align-items:center;overflow:hidden;border-radius:41px;background:#efbd45;color:#17130b;padding:16px 82px 16px 30px;font-size:20px;font-weight:900;text-decoration:none;box-shadow:0 10px 24px #0004}.arrow-reveal-button__label{position:relative;z-index:1;transition:transform .46s cubic-bezier(.44,0,.56,1)}.arrow-reveal-button__badge{position:absolute;z-index:2;right:20px;top:50%;width:48px;height:48px;border-radius:50%;background:#14532d;transform:translateY(-50%);transition:transform .46s cubic-bezier(.44,0,.56,1)}.arrow-reveal-button__icon{position:absolute;z-index:3;right:32px;top:50%;width:24px;height:24px;color:#fff;transform:translateY(-50%);transition:transform .46s cubic-bezier(.44,0,.56,1)}.arrow-reveal-button:hover .arrow-reveal-button__badge{transform:translateY(-50%) scale(12)}.arrow-reveal-button:hover .arrow-reveal-button__icon{transform:translate(-145px,-50%)}.arrow-reveal-button:hover .arrow-reveal-button__label{transform:translateX(8px);color:#fff}.funding-section{padding:26px 20px;overflow-x:visible}.funding-wrap{width:min(490px,100%);max-width:none}.funding-wrap .kicker{margin-bottom:4px}.funding-options{width:100%;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:16px auto 12px}.funding-options button{width:100%;height:60px;aspect-ratio:auto;font-size:28px;line-height:1.05}.application-page .submit{background:#14532d;color:#fff}.application-page .submit:hover{background:#0f3d21;color:#fff}@media(max-width:700px){.arrow-reveal-button{min-height:68px;padding:12px 70px 12px 22px;font-size:16px}.arrow-reveal-button__badge{right:16px;width:42px;height:42px}.arrow-reveal-button__icon{right:25px}.arrow-reveal-button:hover .arrow-reveal-button__icon{transform:translate(-120px,-50%)}}</style>
-  <style>
-    .funding-section { padding: 20px; }
-    .funding-wrap .kicker { margin-bottom: 3px; }
-    .funding-wrap h2 { font-size: clamp(28px, 3.5vw, 38px); line-height: 1.04; }
-    .funding-options { gap: 8px; margin: 12px auto 10px; }
-    .funding-options button { height: 52px; border-color: #b5e66a; background: #dbffad; color: #17320e; font-size: 20px; }
-    .funding-options button:hover, .funding-options button.is-selected { border-color: #91cf39; background: #aee85d; color: #102708; }
-    .funding-section .submit, .application-page .submit { background: #aee85d; color: #102708; box-shadow: 0 8px 18px #0003; }
-    .funding-section .submit:hover, .application-page .submit:hover { background: #91cf39; color: #102708; }
-    .application-page .form-wrap { padding-top: 42px; padding-bottom: 42px; }
-    form { gap: 10px; }
-    .note { padding-top: 18px; padding-bottom: 18px; background: #e7ede3; border-radius: 8px; }
-    .note h2 { color: #a67618; }
-    @media (max-width: 700px) { body { padding-bottom: 0; } .funding-section { padding: 18px 16px; } .funding-options button { height: 50px; font-size: 18px; } .application-page .form-wrap { padding-top: 34px; padding-bottom: 34px; } }
-  </style>
 </head>
 <body>
-  <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=2506070169900710&ev=PageView&noscript=1" alt="" /></noscript>
-  <header class="topbar"><a class="brand" href="#top">線上額度<span>評估</span></a><a class="top-cta" href="#funding">立即諮詢</a></header>
-  <main id="top" class="landing-page">
-    <section class="hero">
-      <img src="assets/hero.jpg" alt="為資金周轉與卡費壓力煩惱的上班族" />
-      <div class="hero-shade"></div>
-      <div class="hero-copy"><p class="eyebrow">資金需求，先釐清再行動</p><h1>讓專人協助您<br><em>擬訂解決方案</em></h1><p>線上簡單填寫資料，即可送出評估。</p><a class="arrow-reveal-button" href="#funding"><span class="arrow-reveal-button__label">想借多少 自己先選</span><span class="arrow-reveal-button__badge" aria-hidden="true"></span><svg class="arrow-reveal-button__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12H19M19 12L13 6M19 12L13 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg></a></div>
+  <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=2506070169900710&amp;ev=PageView&amp;noscript=1" alt=""></noscript>
+  <header class="site-header">
+    <div class="site-header__inner shell">
+      <a class="brand" href="#top" aria-label="線上額度試算 返回頁首"><span class="brand__mark" aria-hidden="true"></span>線上額度試算</a>
+      <nav class="header-nav" aria-label="頁面導覽">
+        <a href="#estimate">試算方式</a>
+        <a class="header-cta" href="#estimate">立即試算 <span aria-hidden="true">↗</span></a>
+      </nav>
+    </div>
+  </header>
+  <main id="top">
+    <section class="hero shell" aria-labelledby="hero-title" data-screen-label="首頁主視覺">
+      <div class="hero-copy">
+        <p class="eyebrow reveal">先看數字 再談方案</p>
+        <h1 class="reveal reveal--2" id="hero-title">資金規劃<br><span>從瞭解開始</span></h1>
+        <p class="hero-lead reveal reveal--3">先選額度與期數 即時查看每月還款參考</p>
+        <a class="primary-action reveal reveal--3" href="#estimate">開始試算 <span class="action-arrow" aria-hidden="true">↗</span></a>
+        <p class="hero-footnote reveal reveal--3">試算無須先填寫個人資料</p>
+      </div>
+      <div class="hero-image">
+        <img src="assets/taipei-morning.webp" alt="清晨陽光照進窗邊 遠望臺灣城市與綠色山景" width="1672" height="941" fetchpriority="high">
+        <span class="hero-image__line" aria-hidden="true"></span>
+      </div>
     </section>
-    <section id="funding" class="funding-section"><div class="funding-wrap"><p class="kicker">選擇額度</p><h2>選擇您的<br>資金需求額度</h2><div class="funding-options" role="group" aria-label="資金需求額度"><button type="button" data-amount="10萬-30萬">10萬-30萬</button><button type="button" data-amount="30萬-80萬">30萬-80萬</button><button type="button" data-amount="80萬-180萬">80萬-180萬</button><button type="button" data-amount="180萬-300萬">180萬-300萬</button></div><button id="continue-button" class="button submit" type="button" disabled>確認並繼續 <span>→</span></button></div></section>
+    <section class="estimate-section shell" id="estimate" aria-labelledby="estimate-title" data-screen-label="立即試算">
+      <span id="funding" class="legacy-anchor" aria-hidden="true"></span>
+      <div class="section-heading">
+        <div><p class="section-label">01 資金規劃</p><h2 id="estimate-title">立即試算</h2></div>
+        <p>數字即時更新 僅供規劃參考</p>
+      </div>
+      <div class="calculator">
+        <div class="calculator-controls">
+          <div class="amount-control">
+            <div class="amount-main">
+              <div class="field-heading"><span id="amount-label">預計借款金額</span><small>點選卡尺刻度調整</small></div>
+              <div class="amount-value" aria-live="polite"><span>NT$</span><strong id="amount-display">1,000,000</strong></div>
+            </div>
+            <div class="amount-ruler" role="group" aria-labelledby="amount-label">
+              <button class="ruler-stop" type="button" data-amount="100000" aria-pressed="false"><span class="ruler-stop__tick" aria-hidden="true"></span><span class="ruler-stop__label">10萬</span></button>
+              <button class="ruler-stop" type="button" data-amount="200000" aria-pressed="false"><span class="ruler-stop__tick" aria-hidden="true"></span><span class="ruler-stop__label">20萬</span></button>
+              <button class="ruler-stop" type="button" data-amount="300000" aria-pressed="false"><span class="ruler-stop__tick" aria-hidden="true"></span><span class="ruler-stop__label">30萬</span></button>
+              <button class="ruler-stop" type="button" data-amount="500000" aria-pressed="false"><span class="ruler-stop__tick" aria-hidden="true"></span><span class="ruler-stop__label">50萬</span></button>
+              <button class="ruler-stop" type="button" data-amount="1000000" aria-pressed="true"><span class="ruler-stop__tick" aria-hidden="true"></span><span class="ruler-stop__label">100萬</span></button>
+              <button class="ruler-stop" type="button" data-amount="1500000" aria-pressed="false"><span class="ruler-stop__tick" aria-hidden="true"></span><span class="ruler-stop__label">150萬</span></button>
+              <button class="ruler-stop" type="button" data-amount="3000000" aria-pressed="false"><span class="ruler-stop__tick" aria-hidden="true"></span><span class="ruler-stop__label">300萬</span></button>
+            </div>
+          </div>
+          <div class="secondary-controls">
+            <div class="control-group">
+              <div class="field-heading"><span>還款期數</span><small>選擇期數 查看差異</small></div>
+              <div class="term-options" role="group" aria-label="還款期數">
+                <button type="button" data-months="36" aria-pressed="false">36 期</button>
+                <button type="button" data-months="48" aria-pressed="false">48 期</button>
+                <button type="button" data-months="60" aria-pressed="true">60 期</button>
+                <button type="button" data-months="120" aria-pressed="false">120 期</button>
+              </div>
+            </div>
+            <div class="control-group">
+              <div class="field-heading"><label for="rate-input">假設年利率</label><small>依自己的假設調整</small></div>
+              <div class="rate-field"><input id="rate-input" type="number" value="2.0" min="0.1" max="20" step="0.1" inputmode="decimal" aria-label="假設年利率百分比"><span aria-hidden="true">%</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="calculator-result" aria-live="polite">
+          <div class="result-primary">
+            <p class="result-label">試算結果 僅供參考</p>
+            <h3 class="result-title">每月還款參考</h3>
+            <div class="monthly-result"><span>NT$</span><strong id="monthly-result">17,528</strong></div>
+          </div>
+          <div class="result-details">
+            <div><span>總還款參考</span><strong id="total-result">NT$ 1,051,680</strong></div>
+            <div><span>估算利息</span><strong id="interest-result">NT$ 51,680</strong></div>
+          </div>
+          <a class="result-action" id="consult-link" href="contact.html?amount=1000000&amp;months=60&amp;rate=2">帶著試算結果諮詢 <span class="action-arrow" aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+    </section>
   </main>
-  <main id="application-page" class="application-page" hidden><section class="form-section"><img src="assets/closing.jpg" alt="專人資金諮詢服務示意圖" /><div class="form-wrap"><button id="back-button" class="back-button" type="button">← 返回額度選擇</button><p class="kicker">聯絡我們</p><h2>填寫<br><em>申請資料</em></h2><p>您選擇的額度：<strong id="selected-amount">未選擇</strong></p><form id="lead-form"><input id="amount-field" name="amount" type="hidden" /><label>您的稱呼<input name="name" autocomplete="name" required placeholder="請輸入稱呼" /></label><label>年齡<input name="age" type="number" inputmode="numeric" min="18" max="120" required placeholder="請輸入年齡" /></label><label>聯絡電話<input name="phone" inputmode="tel" autocomplete="tel" required placeholder="請輸入手機號碼" /></label><label>是否警示戶<select name="warning-account" required><option value="">請選擇</option><option value="yes">是</option><option value="no">否</option></select></label><label class="consent"><input type="checkbox" required /> <span>我已閱讀並同意提供資料，以供專人進行本次諮詢聯繫。</span></label><label class="consent"><input name="tiktok-match-consent" type="checkbox" /> <span>同意將雜湊後的聯絡電話與諮詢識別碼用於 TikTok 廣告成效衡量（選填）</span></label><button class="button submit" type="submit">送出申請→加入 LINE 聯絡</button><p class="form-message" role="status"></p></form></div></section></main>
-  <footer class="note"><h2>重要提醒</h2><p>本頁針對資金需求登記，不代表核准、利率或分配承諾；實際結果視個別條件確認。</p></footer>
-  <div id="success-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="success-title" hidden><div class="modal-card"><p class="modal-kicker">最後一步</p><h2 id="success-title">加入 LINE，傳送諮詢編號</h2><p class="modal-warning">未傳送編號，專員無法核對您的申請資料</p><div class="consultation-code"><span>您的諮詢編號</span><strong id="consultation-code">—</strong></div><a id="line-cta" class="button line-cta" href="https://lin.ee/YZNJLYY"><svg class="line-icon" viewBox="0 0 48 48" aria-hidden="true"><path fill="currentColor" d="M6 7.5h36v24.2c0 4.2-3.4 7.6-7.6 7.6H22.8l-9.4 6.1 1.9-6.1H13.6A7.6 7.6 0 0 1 6 31.7V7.5Z"/><text x="24" y="27" text-anchor="middle">LINE</text></svg>複製編號並前往 LINE <span>→</span></a><p class="modal-hint">加入好友後，請直接貼上並傳送此編號，專員才能優先處理</p></div></div>
-  <div id="eligibility-modal" class="modal eligibility-modal" role="alertdialog" aria-modal="true" aria-labelledby="eligibility-title" hidden><div class="modal-card"><p class="modal-kicker">服務提醒</p><h2 id="eligibility-title">目前無法辦理</h2><p>很抱歉，警示戶目前無法提供本項資金媒合服務</p><p class="eligibility-return">系統將返回首頁</p></div></div>
-  <script src="script.js?v=20261016-tiktok-manual-match"></script>
+  <footer class="footer">
+    <div class="footer-inner shell"><strong>重要提醒</strong><p>預設年利率 2% 僅為試算假設 結果未計入手續費等費用 不代表核准 利率或撥款承諾 實際條件依個別資格與正式揭露內容為準</p></div>
+  </footer>
+  <script src="estimate.js?v=20261103" defer></script>
 </body>
 </html>

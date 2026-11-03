@@ -19,6 +19,7 @@ const warningNoCount = document.querySelector('#warning-no-count');
 const statusLabels = { new: '新線索', line_redirected: '已點擊加入 LINE', contacted: '已聯絡', qualified: '有效諮詢', won: '成交', lost: '無效' };
 const statusActions = [['contacted', '標記已聯絡'], ['qualified', '標記有效諮詢'], ['won', '標記成交'], ['lost', '標記無效']];
 const consultationCode = (leadId) => `L-${String(leadId || '').replace(/-/g, '').slice(0, 8).toUpperCase()}`;
+const allowedEstimateMonths = (value) => [36, 48, 60, 120].includes(value);
 
 const setMessage = (target, text = '') => { target.textContent = text; };
 const formatTime = (value) => new Intl.DateTimeFormat('zh-TW', { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(value));
@@ -49,10 +50,15 @@ function leadCard(lead) {
   badge.textContent = statusLabels[lead.status] || lead.status;
   const meta = document.createElement('div');
   meta.className = 'lead-meta';
+  const estimate = lead.metadata?.estimate;
+  const amountText = Number.isInteger(estimate?.amount)
+    ? `NT$ ${new Intl.NumberFormat('zh-TW').format(estimate.amount)}`
+    : lead.requested_amount;
   [
     `電話：${lead.phone}`,
     `年齡：${lead.age}`,
-    `額度：${lead.requested_amount}`,
+    `額度：${amountText}`,
+    ...(allowedEstimateMonths(estimate?.months) ? [`試算期數：${estimate.months} 期`] : []),
     `警示戶：${lead.warning_account ? '是' : '否'}`,
     `諮詢編號：${consultationCode(lead.id)}`,
     `提交：${formatTime(lead.created_at)}`,
