@@ -6,8 +6,9 @@
 
 ## 正式環境
 
-- 網站：https://funding-consultation-landing-page.vercel.app/
-- CRM：https://funding-consultation-landing-page.vercel.app/crm.html
+- 網站：https://wwluodiye.vercel.app/
+- CRM：https://wwluodiye.vercel.app/crm.html
+- 原網站域名 `funding-consultation-landing-page.vercel.app` 在 Vercel 以 308 轉向新域名，保留路徑與查詢參數。
 - Vercel 專案：`funding-consultation-landing-page`
 - Vercel Team：`kinkman1`
 - Supabase 專案 ref：`tcrqdyzxiodqdgmeeuxf`
